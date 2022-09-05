@@ -1,6 +1,7 @@
 import struct
 from collections import namedtuple
 import mathlib as ml
+
 from math import cos, sin, tan, pi
 
 from obj import Obj
@@ -129,6 +130,7 @@ class Raytracer(object):
             if light.lightType == 0: # directional light
                 diffuseColor = ([0,0,0])
 
+                
                 light_dir = [x * -1 for x in light.direction]
                 intensity = ml.dot(intersect.normal, light_dir)
                 intensity = float(max(0, intensity))
@@ -145,23 +147,17 @@ class Raytracer(object):
 
                 shadowResult = (1 - shadow_intensity)
                 diffColorRes = [x * shadowResult for x in diffuseColor]
-                # print(dirLightColor)
-                # print(diffColorRes)
                 dirLightColor = ml.add(dirLightColor, diffColorRes)
-                # print(dirLightColor)
+
+                
 
             elif light.lightType == 2: # ambient light
+
                 ambLightColor = [x * light.intensity for x in light.color]
 
         finalColor = ml.add(dirLightColor, ambLightColor)
-        # print(f"ObjColor {objectColor}")
-        # print(f"finalColor {finalColor}")
-
-        # finalColor *= objectColor
-
         finalColor = ml.mulvects(finalColor, objectColor)
 
-        # print(finalColor)
         r = min(1, finalColor[0])
         g = min(1, finalColor[1])
         b = min(1, finalColor[2])
@@ -188,6 +184,7 @@ class Raytracer(object):
 
                 direction = V3(Px, Py, -self.nearPlane)
                 direction = [x / ml.norm(direction) for x in direction]
+
 
                 rayColor = self.cast_ray(self.camPosition, direction)
 
